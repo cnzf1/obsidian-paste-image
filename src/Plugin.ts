@@ -153,6 +153,7 @@ export class Plugin extends PluginBase<PluginTypes> {
 
   protected override async onLayoutReady(): Promise<void> {
     await super.onLayoutReady();
+    console.debug("test onLayoutReady");
     Substitutions.registerCustomTokens(this.settings.customTokensStr);
     await this.settingsManager.loadFromFile(false);
 
@@ -214,8 +215,10 @@ export class Plugin extends PluginBase<PluginTypes> {
 
   protected override async onloadImpl(): Promise<void> {
     await super.onloadImpl();
+    console.debug("test onloadImpl");
 
     registerRenameDeleteHandlers(this, () => {
+      console.debug("test registerRenameDeleteHandlers");
       const settings: Partial<RenameDeleteHandlerSettings> = {
         emptyAttachmentFolderBehavior: this.settings.emptyAttachmentFolderBehavior,
         isNote: (path) => isNoteEx(this, path),
@@ -253,6 +256,7 @@ export class Plugin extends PluginBase<PluginTypes> {
 
     registerPatch(this, this.app, {
       saveAttachment: (): SaveAttachmentFn => {
+        console.debug("test patch saveAttachment");
         return (name, extension, data): Promise<TFile> => {
           return this.saveAttachment(name, extension, data);
         };
@@ -301,6 +305,7 @@ export class Plugin extends PluginBase<PluginTypes> {
   }
 
   private generateMarkdownLink(next: GenerateMarkdownLinkFn, file: TFile, sourcePath: string, subpath?: string, alias?: string): string {
+    console.debug("test generateMarkdownLink path:" + file.path + " sourcePath:" + sourcePath + " subpath:" + subpath + " alias:" + alias);
     if (alias === undefined) {
       const imageSize = this.imageAttachmentSizeMap.get(file.path);
       if (imageSize) {
@@ -316,16 +321,19 @@ export class Plugin extends PluginBase<PluginTypes> {
     }
 
     if (!this.settings.markdownUrlFormat) {
+      console.debug("test generateMarkdownLink markdownUrlFormat:" + defaultLink);
       return defaultLink;
     }
 
     const markdownUrl = this.pathMarkdownUrlMap.get(file.path);
 
     if (!markdownUrl) {
+      console.debug("test generateMarkdownLink markdownUrl:" + defaultLink);
       return defaultLink;
     }
 
     if (testWikilink(defaultLink)) {
+      console.debug("test generateMarkdownLink wikilink");
       defaultLink = generateMarkdownLink({
         app: this.app,
         linkStyle: LinkStyle.Markdown,
@@ -337,10 +345,12 @@ export class Plugin extends PluginBase<PluginTypes> {
 
     if (testAngleBrackets(defaultLink)) {
       const tmp = defaultLink.replace(/\]\(<.+?>\)/, `](<${markdownUrl}>)`);
+      console.debug("test generateMarkdownLink defaultLink:" + defaultLink + " tmp:" + tmp);
       return tmp;
     }
 
     const tmp = defaultLink.replace(/\]\(.+?\)/, `](${encodeUrl(markdownUrl)})`);
+    console.debug("test generateMarkdownLink defaultLink:" + defaultLink + " tmp:" + tmp);
     return tmp;
   }
 
@@ -496,6 +506,7 @@ export class Plugin extends PluginBase<PluginTypes> {
     const that = this;
     registerPatch(this, getPrototypeOf(markdownView.editMode.clipboardManager), {
       insertFiles: (next: InsertFilesFn): InsertFilesFn => {
+        console.debug("test insertFilesPatched");
         return function insertFilesPatched(this: ClipboardManager, importedAttachments: ImportedAttachment[]): Promise<void> {
           return that.insertFiles(next, this, importedAttachments);
         };
@@ -506,6 +517,7 @@ export class Plugin extends PluginBase<PluginTypes> {
   }
 
   private handleFileMenu(menu: Menu, file: TAbstractFile): void {
+    console.debug("test handleFileMenu");
     if (!(file instanceof TFolder)) {
       return;
     }
@@ -518,6 +530,7 @@ export class Plugin extends PluginBase<PluginTypes> {
   }
 
   private async handleFileOpen(file: null | TFile): Promise<void> {
+    console.debug("test handleFileOpen");
     if (file === null || this.settings.isPathIgnored(file.path)) {
       this.currentAttachmentFolderPath = null;
       this.lastOpenFilePath = null;
@@ -555,6 +568,7 @@ export class Plugin extends PluginBase<PluginTypes> {
 
   private handleReceiveFilesMenu(menu: Menu, attachmentFiles: TFile[]): void {
     this.handleReceiveMenuItemClick(menu, (noteFile) => {
+      console.debug("test handleReceiveFilesMenu");
       const linkTexts = attachmentFiles.map((attachmentFile) => this.app.fileManager.generateMarkdownLink(attachmentFile, noteFile.path));
       return linkTexts.join('\n');
     });
@@ -579,10 +593,12 @@ export class Plugin extends PluginBase<PluginTypes> {
   }
 
   private handleReceiveTextMenu(menu: Menu, text: string): void {
+    console.debug("test handleReceiveTextMenu");
     this.handleReceiveMenuItemClick(menu, () => text);
   }
 
   private async handleRename(): Promise<void> {
+    console.debug("test handleRename");
     await this.handleFileOpen(this.app.workspace.getActiveFile());
   }
 
@@ -619,8 +635,10 @@ export class Plugin extends PluginBase<PluginTypes> {
     attachmentFileExtension: string,
     attachmentFileContent: ArrayBuffer
   ): Promise<TFile> {
+    console.debug("test saveAttachment");
     const activeNoteFile = this.app.workspace.getActiveFile();
     if (!activeNoteFile || this.settings.isPathIgnored(activeNoteFile.path)) {
+      console.debug("test activeNoteFile saveAttachment");
       return await this.saveAttachmentCore(attachmentFileBaseName, attachmentFileExtension, attachmentFileContent);
     }
 
@@ -674,6 +692,7 @@ export class Plugin extends PluginBase<PluginTypes> {
 
     const attachmentFile = await this.saveAttachmentCore(attachmentFileBaseName, attachmentFileExtension, attachmentFileContent);
     if (this.settings.markdownUrlFormat) {
+      console.debug("test markdownUrlFormat");
       const markdownUrl = await new Substitutions({
         actionContext: ActionContext.SaveAttachment,
         attachmentFileContent,
@@ -696,6 +715,7 @@ export class Plugin extends PluginBase<PluginTypes> {
     attachmentFileExtension: string,
     attachmentFileContent: ArrayBuffer
   ): Promise<TFile> {
+    console.debug("test saveAttachmentCore");
     const noteFile = this.app.workspace.getActiveFile();
     const attachmentFileStat = this.arrayBufferFileStatMap.get(attachmentFileContent);
 
@@ -717,6 +737,7 @@ export class Plugin extends PluginBase<PluginTypes> {
       this.imageAttachmentSizeMap.set(attachmentPath, imageSize);
     }
 
+    console.debug("test createBinary " + attachmentPath);
     return await this.app.vault.createBinary(
       attachmentPath,
       attachmentFileContent,
