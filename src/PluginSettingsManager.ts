@@ -147,11 +147,11 @@ ${commentOut(this.legacySettings.customTokensStr)}
 
     this.legacySettings.generatedAttachmentFileName = addDateTimeFormat(
       this.legacySettings.generatedAttachmentFileName
-        ?? this.legacySettings.generatedAttachmentFilename
-        ?? this.legacySettings.pastedFileName
-        ?? this.legacySettings.pastedImageFileName
-        // eslint-disable-next-line no-template-curly-in-string -- Valid token.
-        ?? 'file-${date}',
+      ?? this.legacySettings.generatedAttachmentFilename
+      ?? this.legacySettings.pastedFileName
+      ?? this.legacySettings.pastedImageFileName
+      // eslint-disable-next-line no-template-curly-in-string -- Valid token.
+      ?? 'file-${date}',
       dateTimeFormat
     );
   }

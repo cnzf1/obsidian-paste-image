@@ -89,7 +89,7 @@ class PromptWithPreviewModal extends Modal {
 
   public override onOpen(): void {
     super.onOpen();
-     
+
 
     const title = createFragment((f) => {
       f.appendText(t(($) => $.promptWithPreviewModal.title));
@@ -149,7 +149,6 @@ class PromptWithPreviewModal extends Modal {
   }
 
   private handleOk(event: Event, textComponent: TextComponent): void {
-     
     event.preventDefault();
     if (!textComponent.inputEl.checkValidity()) {
       return;
