@@ -246,6 +246,10 @@ export const zh: Translations<PluginTypes> = {
       description: '质量越低，压缩率越高。',
       name: 'JPEG 质量'
     },
+    imageFormat: {
+      name: '贴图格式',
+      description: '插入到 Markdown 中的图像格式.',
+    },
     locationForNewAttachments: {
       description: {
         part1: '以',

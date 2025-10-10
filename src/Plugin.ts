@@ -313,12 +313,16 @@ export class Plugin extends PluginBase<PluginTypes> {
         alias = imageSize;
       }
     }
+
     let defaultLink = next.call(this.app.fileManager, file, sourcePath, subpath, alias);
+
+    if (this.settings.imageFormat === "html") {
+      return "<img src='" + file.path + "' align='left' alt='" + sourcePath + "'>";
+    }
 
     if (!this.settings.markdownUrlFormat) {
       console.debug("test generateMarkdownLink markdownUrlFormat:" + defaultLink);
-      // return defaultLink;
-      return "<img src='" + file.path + "' align='left' alt='this is alt'>";
+      return defaultLink;
     }
 
     const markdownUrl = this.pathMarkdownUrlMap.get(file.path);

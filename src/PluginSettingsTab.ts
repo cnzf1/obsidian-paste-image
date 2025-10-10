@@ -57,7 +57,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
     };
 
     this._format = new SettingEx(this.containerEl)
-      // .setName(t(($) => $.pluginSettingsTab.imageFormat.name))
+      .setName(t(($) => $.pluginSettingsTab.imageFormat.name))
       .setName(this.plugin.settings.imageFormat)
       .setDesc(t(($) => $.pluginSettingsTab.imageFormat.description))
       .addDropdown((dropDown) => {
