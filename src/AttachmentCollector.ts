@@ -203,7 +203,6 @@ export async function collectAttachments(
 }
 
 export function collectAttachmentsCurrentFolder(plugin: Plugin, checking: boolean): boolean {
-  console.debug("test collectAttachmentsCurrentFolder");
   const note = plugin.app.workspace.getActiveFile();
   if (!isNoteEx(plugin, note)) {
     return false;
@@ -222,7 +221,6 @@ export function collectAttachmentsCurrentFolder(plugin: Plugin, checking: boolea
 }
 
 export function collectAttachmentsCurrentNote(plugin: Plugin, checking: boolean): boolean {
-  console.debug("test collectAttachmentsCurrentNote");
   const note = plugin.app.workspace.getActiveFile();
   if (!note || !isNoteEx(plugin, note)) {
     return false;
@@ -242,7 +240,6 @@ export function collectAttachmentsCurrentNote(plugin: Plugin, checking: boolean)
 }
 
 export function collectAttachmentsEntireVault(plugin: Plugin): void {
-  console.debug("test collectAttachmentsEntireVault");
   addToQueue(
     plugin.app,
     (abortSignal) => collectAttachmentsInFolder(plugin, plugin.app.vault.getRoot(), abortSignal),
