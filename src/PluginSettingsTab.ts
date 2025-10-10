@@ -33,12 +33,12 @@ const VISIBLE_WHITESPACE_CHARACTER = '␣';
 
 export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
   override plugin: Plugin;
-  private _format: null | SettingEx;
+  // private _format: null | SettingEx;
 
   constructor(plugin: Plugin) {
     super(plugin);
     this.plugin = plugin;
-    this._format = null;
+    // this._format = null;
   }
 
   public override display(): void {
@@ -56,19 +56,19 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
       shouldShowPlaceholderForDefaultValues: false
     };
 
-    this._format = new SettingEx(this.containerEl)
+    new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.imageFormat.name))
       .setName(this.plugin.settings.imageFormat)
       .setDesc(t(($) => $.pluginSettingsTab.imageFormat.description))
       .addDropdown((dropDown) => {
         dropDown.addOptions(generateImageFormat())
-          .setValue(this.plugin.settings.imageFormat)
-          .onChange(async (value) => {
-            console.debug("click: " + value);
-            this._format?.setName(value);
-          });
+        // .setValue(this.plugin.settings.imageFormat)
+        // .onChange(async (value) => {
+        //   console.debug("click: " + value);
+        //   this._format?.setName(value);
+        // });
 
-        // this.bind(dropDown, 'imageFormat');
+        this.bind(dropDown, 'imageFormat');
       });
 
     new SettingEx(this.containerEl)
@@ -410,7 +410,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
 
     const REGISTER_CUSTOM_TOKENS_DEBOUNCE_IN_MILLISECONDS = 2000;
     const registerCustomTokensDebounced = debounce((customTokensStr: string) => {
-      console.debug("test registerCustomTokensDebounced");
+       
       invokeAsyncSafely(async () => {
         Substitutions.registerCustomTokens(customTokensStr);
         await this.revalidate();

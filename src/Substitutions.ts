@@ -271,7 +271,7 @@ function getFrontmatterValue(app: App, filePath: string, key: string): string {
 export class Substitutions {
   private static readonly evaluators = new Map<string, TokenEvaluator>();
   static {
-    console.debug("test Substitutions");
+     
     this.registerCustomTokens('');
   }
 
@@ -341,7 +341,7 @@ export class Substitutions {
   }
 
   public static registerCustomTokens(customTokensStr: string): void {
-    console.debug("test registerCustomTokens");
+     
     this.evaluators.clear();
     this.registerToken('date', (ctx) => formatDate(ctx.format));
     this.registerToken(
@@ -393,7 +393,7 @@ export class Substitutions {
   }
 
   public async fillTemplate(template: string): Promise<string> {
-    console.debug("test fillTemplate: " + template);
+     
     return await replaceAllAsync(template, SUBSTITUTION_TOKEN_REG_EXP, async (abortSignal, args, token, format) => {
       abortSignal.throwIfAborted();
 
@@ -449,7 +449,7 @@ export class Substitutions {
   }
 
   public async prompt(ctx: TokenEvaluatorContext): Promise<string> {
-    console.debug("test prompt");
+     
     // Validate format
     formatString('', ctx.format);
 
@@ -651,7 +651,7 @@ function slugifyEx(str: string): string {
 }
 
 async function validateTokens(plugin: Plugin, str: string): Promise<null | string> {
-  console.debug("test validateTokens");
+   
   const FAKE_SUBSTITUTION = new Substitutions({
     actionContext: ActionContext.ValidateTokens,
     noteFilePath: DUMMY_PATH,
