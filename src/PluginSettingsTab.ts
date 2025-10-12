@@ -33,12 +33,65 @@ const VISIBLE_WHITESPACE_CHARACTER = '␣';
 
 export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
   override plugin: Plugin;
-  private _format: null | SettingEx;
+  private _showLocationForNewAttachments: null | SettingEx;
+  private _showGeneratedAttachmentFileName: SettingEx | undefined;
+  private _showMarkdownUrlFormat: SettingEx | undefined;
+  private _showAttachmentRenameMode: SettingEx | undefined;
+  private _showShouldRenameAttachmentFolders: SettingEx | undefined;
+  private _showShouldRenameAttachmentFiles: SettingEx | undefined;
+  private _showShouldRenameSpecialCharacters: SettingEx | undefined;
+  private _showSpecialCharactersReplacement: SettingEx | undefined;
+  private _showShouldConvertPastedImagesToJpeg: SettingEx | undefined;
+  private _showJpegQuality: SettingEx | undefined;
+  private _showShouldRenameCollectedAttachments: SettingEx | undefined;
+  private showCollectAttachmentUsedByMultipleNotesMode: SettingEx | undefined;
+  private _showDuplicateNameSeparator: SettingEx | undefined;
+  private _showShouldDeleteOrphanAttachments: SettingEx | undefined;
+  private _showExcludePaths: SettingEx | undefined;
+  private _showIncludePath: SettingEx | undefined;
+  private _showResetToSampleCustomTokens: SettingEx | undefined;
+  private _showTreatAsAttachmentExtensions: SettingEx | undefined;
+  private _showTimeoutSeconds: SettingEx | undefined;
+  private _showDefaultImageSize: SettingEx | undefined;
+  private _showEmptyAttachmentFolderBehavior: SettingEx | undefined;
+  private _showCustomTokens: SettingEx | undefined;
+  private _showExcludePathsFromAttachmentCollecting: SettingEx | undefined;
 
   constructor(plugin: Plugin) {
     super(plugin);
     this.plugin = plugin;
-    this._format = null;
+    this._showLocationForNewAttachments = null;
+  }
+
+  private setupVisible(imgFormat: string): void {
+    var showMarkdown = false;
+    if (imgFormat == "markdown") {
+      showMarkdown = true;
+    }
+
+    this._showLocationForNewAttachments?.setVisibility(showMarkdown);
+    this._showGeneratedAttachmentFileName?.setVisibility(showMarkdown);
+    this._showMarkdownUrlFormat?.setVisibility(showMarkdown);
+    this._showAttachmentRenameMode?.setVisibility(showMarkdown);
+    this._showShouldRenameAttachmentFolders?.setVisibility(showMarkdown);
+    this._showShouldRenameAttachmentFiles?.setVisibility(showMarkdown);
+    this._showShouldRenameSpecialCharacters?.setVisibility(showMarkdown);
+    this._showSpecialCharactersReplacement?.setVisibility(showMarkdown);
+    this._showShouldConvertPastedImagesToJpeg?.setVisibility(showMarkdown);
+    this._showJpegQuality?.setVisibility(showMarkdown);
+    this._showShouldRenameCollectedAttachments?.setVisibility(showMarkdown);
+    this.showCollectAttachmentUsedByMultipleNotesMode?.setVisibility(showMarkdown);
+    this._showDuplicateNameSeparator?.setVisibility(showMarkdown);
+    this._showShouldDeleteOrphanAttachments?.setVisibility(showMarkdown);
+    this._showExcludePaths?.setVisibility(showMarkdown);
+    this._showIncludePath?.setVisibility(showMarkdown);
+    this._showResetToSampleCustomTokens?.setVisibility(showMarkdown);
+    this._showTreatAsAttachmentExtensions?.setVisibility(showMarkdown);
+    this._showTimeoutSeconds?.setVisibility(showMarkdown);
+    this._showDefaultImageSize?.setVisibility(showMarkdown);
+    this._showEmptyAttachmentFolderBehavior?.setVisibility(showMarkdown);
+    this._showCustomTokens?.setVisibility(showMarkdown);
+    this._showExcludePathsFromAttachmentCollecting?.setVisibility(showMarkdown);
   }
 
   public override display(): void {
@@ -67,11 +120,11 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
             this.plugin.settingsManager.setProperty("imageFormat", value);
             // this._format?.setName(value);
             // console.debug("select: " + value + " target:" + this.plugin.settings.imageFormat);
-            this._format?.setVisibility(value == "markdown");
+            this.setupVisible(value);
           });
       });
 
-    this._format = new SettingEx(this.containerEl)
+    this._showLocationForNewAttachments = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.locationForNewAttachments.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.locationForNewAttachments.description.part1));
@@ -104,7 +157,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(codeHighlighter, 'attachmentFolderPath', bindOptionsWithTrim);
       });
 
-    new SettingEx(this.containerEl)
+    this._showGeneratedAttachmentFileName = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.generatedAttachmentFileName.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.generatedAttachmentFileName.description.part1));
@@ -121,7 +174,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(codeHighlighter, 'generatedAttachmentFileName', bindOptionsWithTrim);
       });
 
-    new SettingEx(this.containerEl)
+    this._showMarkdownUrlFormat = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.markdownUrlFormat.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.markdownUrlFormat.description.part1));
@@ -142,7 +195,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(codeHighlighter, 'markdownUrlFormat', bindOptionsWithTrim);
       });
 
-    new SettingEx(this.containerEl)
+    this._showAttachmentRenameMode = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.attachmentRenameMode.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.attachmentRenameMode.description.part1));
@@ -170,21 +223,21 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(dropdown, 'attachmentRenameMode');
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldRenameAttachmentFolders = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.shouldRenameAttachmentFolders.name))
       .setDesc(t(($) => $.pluginSettingsTab.shouldRenameAttachmentFolders.description))
       .addToggle((toggle) => {
         this.bind(toggle, 'shouldRenameAttachmentFolder');
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldRenameAttachmentFiles = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.shouldRenameAttachmentFiles.name))
       .setDesc(t(($) => $.pluginSettingsTab.shouldRenameAttachmentFiles.description))
       .addToggle((toggle) => {
         this.bind(toggle, 'shouldRenameAttachmentFiles');
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldRenameSpecialCharacters = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.specialCharacters.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.specialCharacters.description.part1));
@@ -203,7 +256,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         });
       });
 
-    new SettingEx(this.containerEl)
+    this._showSpecialCharactersReplacement = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.specialCharactersReplacement.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.specialCharactersReplacement.description.part1));
@@ -217,14 +270,14 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         });
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldConvertPastedImagesToJpeg = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.shouldConvertPastedImagesToJpeg.name))
       .setDesc(t(($) => $.pluginSettingsTab.shouldConvertPastedImagesToJpeg.description))
       .addToggle((toggle) => {
         this.bind(toggle, 'shouldConvertPastedImagesToJpeg');
       });
 
-    new SettingEx(this.containerEl)
+    this._showJpegQuality = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.jpegQuality.name))
       .setDesc(t(($) => $.pluginSettingsTab.jpegQuality.description))
       .addDropdown((dropDown) => {
@@ -235,7 +288,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         });
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldRenameCollectedAttachments = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.shouldRenameCollectedAttachments.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.shouldRenameCollectedAttachments.description.part1));
@@ -252,7 +305,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(toggle, 'shouldRenameCollectedAttachments');
       });
 
-    new SettingEx(this.containerEl)
+    this.showCollectAttachmentUsedByMultipleNotesMode = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.collectAttachmentUsedByMultipleNotesMode.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.collectAttachmentUsedByMultipleNotesMode.description.part1));
@@ -290,7 +343,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(dropdown, 'collectAttachmentUsedByMultipleNotesMode');
       });
 
-    new SettingEx(this.containerEl)
+    this._showDuplicateNameSeparator = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.duplicateNameSeparator.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.duplicateNameSeparator.description.part1));
@@ -315,7 +368,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         });
       });
 
-    new SettingEx(this.containerEl)
+    this._showEmptyAttachmentFolderBehavior = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.emptyAttachmentFolderBehavior.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.emptyAttachmentFolderBehavior.description.part1));
@@ -343,14 +396,14 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(dropdown, 'emptyAttachmentFolderBehavior');
       });
 
-    new SettingEx(this.containerEl)
+    this._showShouldDeleteOrphanAttachments = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.shouldDeleteOrphanAttachments.name))
       .setDesc(t(($) => $.pluginSettingsTab.shouldDeleteOrphanAttachments.description))
       .addToggle((toggle) => {
         this.bind(toggle, 'shouldDeleteOrphanAttachments');
       });
 
-    new SettingEx(this.containerEl)
+    this._showIncludePath = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.includePaths.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.includePaths.description.part1));
@@ -368,7 +421,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(multipleText, 'includePaths');
       });
 
-    new SettingEx(this.containerEl)
+    this._showExcludePaths = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.excludePaths.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.excludePaths.description.part1));
@@ -386,7 +439,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(multipleText, 'excludePaths');
       });
 
-    new SettingEx(this.containerEl)
+    this._showExcludePathsFromAttachmentCollecting = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.excludePathsFromAttachmentCollecting.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.excludePathsFromAttachmentCollecting.description.part1));
@@ -416,7 +469,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
       });
     }, REGISTER_CUSTOM_TOKENS_DEBOUNCE_IN_MILLISECONDS);
 
-    new SettingEx(this.containerEl)
+    this._showCustomTokens = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.customTokens.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.customTokens.description.part1));
@@ -443,7 +496,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
       });
     this.plugin.settingsManager.shouldDebounceCustomTokensValidation = true;
 
-    new SettingEx(this.containerEl)
+    this._showResetToSampleCustomTokens = new SettingEx(this.containerEl)
       .addButton((button) => {
         button.setButtonText(t(($) => $.pluginSettingsTab.resetToSampleCustomTokens.title));
         button.setWarning();
@@ -471,7 +524,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         }));
       });
 
-    new SettingEx(this.containerEl)
+    this._showTreatAsAttachmentExtensions = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.treatAsAttachmentExtensions.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.treatAsAttachmentExtensions.description.part1));
@@ -501,7 +554,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(multipleText, 'treatAsAttachmentExtensions');
       });
 
-    new SettingEx(this.containerEl)
+    this._showTimeoutSeconds = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.timeoutInSeconds.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.timeoutInSeconds.description.part1));
@@ -517,7 +570,7 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
         this.bind(number, 'timeoutInSeconds');
       });
 
-    new SettingEx(this.containerEl)
+    this._showDefaultImageSize = new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.defaultImageSize.name))
       .setDesc(createFragment((f) => {
         f.appendText(t(($) => $.pluginSettingsTab.defaultImageSize.description.part1));
