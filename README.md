@@ -4,6 +4,7 @@ This is a plugin for [Obsidian](https://obsidian.md/) that allows to customize a
 
 ## Features
 
+- Support HTML `<img>` tag and Markdown `![]` tag.
 - Modify location for attachment folder.
 - Modify file name for **Pasted Files**.
 - **Collect attachments** - take all attachments from the notes and puts them into the corresponding configured folders.
