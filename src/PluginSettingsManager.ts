@@ -1,9 +1,6 @@
 import type { MaybeReturn } from 'obsidian-dev-utils/Type';
 
-import {
-  App,
-  debounce
-} from 'obsidian';
+import { App, debounce } from 'obsidian';
 import { invokeAsyncSafely } from 'obsidian-dev-utils/Async';
 import { appendCodeBlock } from 'obsidian-dev-utils/HTMLElement';
 import { t } from 'obsidian-dev-utils/obsidian/i18n/i18n';
@@ -18,16 +15,8 @@ import { compare } from 'semver';
 import type { Plugin } from './Plugin.ts';
 import type { PluginTypes } from './PluginTypes.ts';
 
-import {
-  CollectAttachmentUsedByMultipleNotesMode,
-  PluginSettings
-} from './PluginSettings.ts';
-import {
-  parseCustomTokens,
-  TokenValidationMode,
-  validateFileName,
-  validatePath
-} from './Substitutions.ts';
+import { CollectAttachmentUsedByMultipleNotesMode, PluginSettings } from './PluginSettings.ts';
+import { parseCustomTokens, TokenValidationMode, validateFileName, validatePath } from './Substitutions.ts';
 
 const CUSTOM_TOKENS_VALIDATOR_DEBOUNCE_IN_MILLISECONDS = 2000;
 
@@ -60,7 +49,10 @@ class LegacySettings {
 class LegacySettingsConverter {
   private readonly app: App;
 
-  public constructor(private readonly legacySettings: Partial<LegacySettings> & Partial<PluginSettings>, private readonly plugin: Plugin) {
+  public constructor(
+    private readonly legacySettings: Partial<LegacySettings> & Partial<PluginSettings>,
+    private readonly plugin: Plugin,
+  ) {
     this.app = plugin.app;
   }
 
@@ -104,8 +96,12 @@ class LegacySettingsConverter {
   }
 
   private convertCollectAttachmentUsedByMultipleNotesMode(): void {
-    if (this.legacySettings.collectAttachmentUsedByMultipleNotesMode === undefined && this.legacySettings.shouldDuplicateCollectedAttachments !== undefined) {
-      this.legacySettings.collectAttachmentUsedByMultipleNotesMode = this.legacySettings.shouldDuplicateCollectedAttachments
+    if (
+      this.legacySettings.collectAttachmentUsedByMultipleNotesMode === undefined &&
+      this.legacySettings.shouldDuplicateCollectedAttachments !== undefined
+    ) {
+      this.legacySettings.collectAttachmentUsedByMultipleNotesMode = this.legacySettings
+        .shouldDuplicateCollectedAttachments
         ? CollectAttachmentUsedByMultipleNotesMode.Copy
         : CollectAttachmentUsedByMultipleNotesMode.Skip;
     }
@@ -118,7 +114,11 @@ class LegacySettingsConverter {
   }
 
   private convertCustomTokensStr(): void {
-    if (this.legacySettings.customTokensStr && this.legacySettings.version && compare(this.legacySettings.version, '9.0.0') < 0) {
+    if (
+      this.legacySettings.customTokensStr &&
+      this.legacySettings.version &&
+      compare(this.legacySettings.version, '9.0.0') < 0
+    ) {
       this.legacySettings.customTokensStr = `${t(($) => $.pluginSettingsManager.customToken.codeComment)}
 
 ${commentOut(this.legacySettings.customTokensStr)}
@@ -131,11 +131,11 @@ ${commentOut(this.legacySettings.customTokensStr)}
             f.appendText(t(($) => $.pluginSettingsManager.customToken.deprecated.part1));
             f.createEl('a', {
               href: 'https://github.com/cnzf1/obsidian-paste-image?tab=readme-ov-file#custom-tokens',
-              text: t(($) => $.pluginSettingsManager.customToken.deprecated.part2)
+              text: t(($) => $.pluginSettingsManager.customToken.deprecated.part2),
             });
             f.appendText(' ');
             f.appendText(t(($) => $.pluginSettingsManager.customToken.deprecated.part3));
-          })
+          }),
         });
       });
     }
@@ -143,16 +143,19 @@ ${commentOut(this.legacySettings.customTokensStr)}
 
   private convertDateTimeFormat(): void {
     const dateTimeFormat = this.legacySettings.dateTimeFormat ?? 'YYYYMMDDHHmmssSSS';
-    this.legacySettings.attachmentFolderPath = addDateTimeFormat(this.legacySettings.attachmentFolderPath ?? '', dateTimeFormat);
+    this.legacySettings.attachmentFolderPath = addDateTimeFormat(
+      this.legacySettings.attachmentFolderPath ?? '',
+      dateTimeFormat,
+    );
 
     this.legacySettings.generatedAttachmentFileName = addDateTimeFormat(
-      this.legacySettings.generatedAttachmentFileName
-      ?? this.legacySettings.generatedAttachmentFilename
-      ?? this.legacySettings.pastedFileName
-      ?? this.legacySettings.pastedImageFileName
-      // eslint-disable-next-line no-template-curly-in-string -- Valid token.
-      ?? 'file-${date}',
-      dateTimeFormat
+      this.legacySettings.generatedAttachmentFileName ??
+        this.legacySettings.generatedAttachmentFilename ??
+        this.legacySettings.pastedFileName ??
+        this.legacySettings.pastedImageFileName ??
+        // eslint-disable-next-line no-template-curly-in-string -- Valid token.
+        'file-${date}',
+      dateTimeFormat,
     );
   }
 
@@ -170,16 +173,20 @@ ${commentOut(this.legacySettings.customTokensStr)}
 
   private convertLegacyTokens(): void {
     this.legacySettings.attachmentFolderPath = this.replaceLegacyTokens(this.legacySettings.attachmentFolderPath);
-    this.legacySettings.generatedAttachmentFileName = this.replaceLegacyTokens(this.legacySettings.generatedAttachmentFileName);
+    this.legacySettings.generatedAttachmentFileName = this.replaceLegacyTokens(
+      this.legacySettings.generatedAttachmentFileName,
+    );
     this.legacySettings.markdownUrlFormat = this.replaceLegacyTokens(this.legacySettings.markdownUrlFormat);
     this.legacySettings.customTokensStr = this.replaceLegacyTokens(this.legacySettings.customTokensStr ?? '');
   }
 
   private convertMarkdownUrlFormat(): void {
     if (
-      this.legacySettings.version && compare(this.legacySettings.version, '9.2.0') < 0
+      this.legacySettings.version &&
+      compare(this.legacySettings.version, '9.2.0') < 0 &&
       // eslint-disable-next-line no-template-curly-in-string -- Valid token.
-      && (this.legacySettings.markdownUrlFormat === '${generatedAttachmentFilePath}' || this.legacySettings.markdownUrlFormat === '${noteFilePath}')
+      (this.legacySettings.markdownUrlFormat === '${generatedAttachmentFilePath}' ||
+        this.legacySettings.markdownUrlFormat === '${noteFilePath}')
     ) {
       invokeAsyncSafely(async () => {
         await this.plugin.waitForLifecycleEvent('layoutReady');
@@ -187,17 +194,20 @@ ${commentOut(this.legacySettings.customTokensStr)}
           app: this.app,
           message: createFragment((f) => {
             f.appendText(t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part1));
-            appendCodeBlock(f, t(($) => $.pluginSettingsTab.markdownUrlFormat.name));
+            appendCodeBlock(
+              f,
+              t(($) => $.pluginSettingsTab.markdownUrlFormat.name),
+            );
             f.appendText(t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part2));
             f.createEl('a', {
               href: 'https://github.com/cnzf1/obsidian-paste-image?tab=readme-ov-file#markdown-url-format',
-              text: t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part3)
+              text: t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part3),
             });
             f.appendText(' ');
             f.appendText(t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part4));
             f.appendText(' ');
             f.appendText(t(($) => $.pluginSettingsManager.markdownUrlFormat.deprecated.part5));
-          })
+          }),
         });
       });
     }
@@ -230,7 +240,11 @@ ${commentOut(this.legacySettings.customTokensStr)}
   }
 
   private convertSpecialCharacters(): void {
-    if (this.legacySettings.version && compare(this.legacySettings.version, '9.16.0') < 0 && this.legacySettings.specialCharacters === '#^[]|*\\<>:?') {
+    if (
+      this.legacySettings.version &&
+      compare(this.legacySettings.version, '9.16.0') < 0 &&
+      this.legacySettings.specialCharacters === '#^[]|*\\<>:?'
+    ) {
       this.legacySettings.specialCharacters = '#^[]|*\\<>:?/';
       invokeAsyncSafely(async () => {
         await this.plugin.waitForLifecycleEvent('layoutReady');
@@ -238,9 +252,12 @@ ${commentOut(this.legacySettings.customTokensStr)}
           app: this.app,
           message: createFragment((f) => {
             f.appendText(t(($) => $.pluginSettingsManager.specialCharacters.part1));
-            appendCodeBlock(f, t(($) => $.pluginSettingsTab.specialCharacters.name));
+            appendCodeBlock(
+              f,
+              t(($) => $.pluginSettingsTab.specialCharacters.name),
+            );
             f.appendText(t(($) => $.pluginSettingsManager.specialCharacters.part2));
-          })
+          }),
         });
       });
     }
@@ -255,7 +272,10 @@ ${commentOut(this.legacySettings.customTokensStr)}
           message: createFragment((f) => {
             f.appendText(t(($) => $.pluginSettingsManager.legacyRenameAttachmentsToLowerCase.part1));
             f.appendText(' ');
-            appendCodeBlock(f, t(($) => $.pluginSettingsTab.renameAttachmentsToLowerCase));
+            appendCodeBlock(
+              f,
+              t(($) => $.pluginSettingsTab.renameAttachmentsToLowerCase),
+            );
             f.appendText(' ');
             f.appendText(t(($) => $.pluginSettingsManager.legacyRenameAttachmentsToLowerCase.part2));
             f.appendText(' ');
@@ -265,11 +285,11 @@ ${commentOut(this.legacySettings.customTokensStr)}
             f.appendText(' ');
             f.createEl('a', {
               href: 'https://github.com/cnzf1/obsidian-paste-image?tab=readme-ov-file#tokens',
-              text: t(($) => $.pluginSettingsManager.legacyRenameAttachmentsToLowerCase.part4)
+              text: t(($) => $.pluginSettingsManager.legacyRenameAttachmentsToLowerCase.part4),
             });
             f.appendText(' ');
             f.appendText(t(($) => $.pluginSettingsManager.legacyRenameAttachmentsToLowerCase.part5));
-          })
+          }),
         });
       });
     }
@@ -308,7 +328,7 @@ ${commentOut(this.legacySettings.customTokensStr)}
             appendCodeBlock(f, this.plugin.manifest.version);
             f.appendText('. ');
             f.appendText(t(($) => $.pluginSettingsManager.version.part4));
-          })
+          }),
         });
       });
       this.legacySettings.version = this.plugin.manifest.version;
@@ -335,7 +355,7 @@ ${commentOut(this.legacySettings.customTokensStr)}
       randomDigit: 'random:D',
       randomDigitOrLetter: 'random:DL',
       randomLetter: 'random:L',
-      uuid: 'random:uuid'
+      uuid: 'random:uuid',
     };
 
     for (const [oldTokenName, newTokenName] of Object.entries(TOKEN_NAME_MAP)) {
@@ -349,7 +369,10 @@ ${commentOut(this.legacySettings.customTokensStr)}
 
 export class PluginSettingsManager extends PluginSettingsManagerBase<PluginTypes> {
   public shouldDebounceCustomTokensValidation = false;
-  private readonly customTokensValidatorDebounced = debounce(this.customTokensValidatorImpl.bind(this), CUSTOM_TOKENS_VALIDATOR_DEBOUNCE_IN_MILLISECONDS);
+  private readonly customTokensValidatorDebounced = debounce(
+    this.customTokensValidatorImpl.bind(this),
+    CUSTOM_TOKENS_VALIDATOR_DEBOUNCE_IN_MILLISECONDS,
+  );
   private lastCustomTokenValidatorResult: string | undefined = undefined;
 
   protected override createDefaultSettings(): PluginSettings {
@@ -363,22 +386,31 @@ export class PluginSettingsManager extends PluginSettingsManagerBase<PluginTypes
   }
 
   protected override registerValidators(): void {
-    this.registerValidator('attachmentFolderPath', async (value) =>
-      await validatePath({
-        areTokensAllowed: true,
-        path: value,
-        plugin: this.plugin
-      }));
-    this.registerValidator('generatedAttachmentFileName', async (value) =>
-      await validatePath({
-        areTokensAllowed: true,
-        path: value,
-        plugin: this.plugin
-      }));
+    this.registerValidator(
+      'attachmentFolderPath',
+      async (value) =>
+        await validatePath({
+          areTokensAllowed: true,
+          path: value,
+          plugin: this.plugin,
+        }),
+    );
+    this.registerValidator(
+      'generatedAttachmentFileName',
+      async (value) =>
+        await validatePath({
+          areTokensAllowed: true,
+          path: value,
+          plugin: this.plugin,
+        }),
+    );
 
     this.registerValidator('specialCharactersReplacement', (value): MaybeReturn<string> => {
       if (getOsUnsafePathCharsRegExp().exec(value)) {
-        return t(($) => $.pluginSettingsManager.validation.specialCharactersReplacementMustNotContainInvalidFileNamePathCharacters);
+        return t(
+          ($) =>
+            $.pluginSettingsManager.validation.specialCharactersReplacementMustNotContainInvalidFileNamePathCharacters,
+        );
       }
     });
 
@@ -395,7 +427,7 @@ export class PluginSettingsManager extends PluginSettingsManagerBase<PluginTypes
         fileName: `foo${value}1`,
         isEmptyAllowed: false,
         plugin: this.plugin,
-        tokenValidationMode: TokenValidationMode.Error
+        tokenValidationMode: TokenValidationMode.Error,
       });
     });
 
@@ -424,7 +456,8 @@ export class PluginSettingsManager extends PluginSettingsManagerBase<PluginTypes
 
   private customTokensValidatorImpl(customTokensStr: string): void {
     const customTokens = parseCustomTokens(customTokensStr);
-    this.lastCustomTokenValidatorResult = customTokens === null ? t(($) => $.pluginSettingsManager.validation.invalidCustomTokensCode) : undefined;
+    this.lastCustomTokenValidatorResult =
+      customTokens === null ? t(($) => $.pluginSettingsManager.validation.invalidCustomTokensCode) : undefined;
   }
 }
 

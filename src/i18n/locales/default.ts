@@ -5,131 +5,133 @@ export const defaultTranslations = {
     confirm: {
       part1: 'Do you want to collect attachments for all notes in folder:',
       part2: 'and all its subfolders?',
-      part3: 'This operation cannot be undone.'
+      part3: 'This operation cannot be undone.',
     },
     progressBar: {
-      message: 'Collecting attachments {{iterationStr}} - \'{{noteFilePath}}\'.',
-      title: 'Collecting attachments...'
-    }
+      message: "Collecting attachments {{iterationStr}} - '{{noteFilePath}}'.",
+      title: 'Collecting attachments...',
+    },
   },
   buttons: {
     copy: 'Copy',
     move: 'Move',
     previewAttachmentFile: 'Preview attachment file',
-    skip: 'Skip'
+    skip: 'Skip',
   },
   collectAttachmentUsedByMultipleNotesModal: {
     content: {
       part1: 'Attachment',
-      part2: 'is referenced by multiple notes.'
+      part2: 'is referenced by multiple notes.',
     },
     heading: 'Collecting attachment used by multiple notes',
-    shouldUseSameActionForOtherProblematicAttachmentsToggle: 'Should use the same action for other problematic attachments'
+    shouldUseSameActionForOtherProblematicAttachmentsToggle:
+      'Should use the same action for other problematic attachments',
   },
   commands: {
     collectAttachmentsCurrentFolder: 'Collect attachments in current folder',
     collectAttachmentsCurrentNote: 'Collect attachments in current note',
-    collectAttachmentsEntireVault: 'Collect attachments in entire vault'
+    collectAttachmentsEntireVault: 'Collect attachments in entire vault',
   },
   menuItems: {
-    collectAttachmentsInFolder: 'Collect attachments in folder'
+    collectAttachmentsInFolder: 'Collect attachments in folder',
   },
   notice: {
-    collectingAttachments: 'Collecting attachments for \'{{noteFilePath}}\'',
+    collectingAttachments: "Collecting attachments for '{{noteFilePath}}'",
     collectingAttachmentsCancelled: 'Collecting attachments cancelled. See console for details.',
     generatedAttachmentFileNameIsInvalid: {
-      part1: 'Generated attachment file name \'{{path}}\' is invalid.\n{{validationMessage}}\nCheck your',
-      part2: 'setting.'
+      part1: "Generated attachment file name '{{path}}' is invalid.\n{{validationMessage}}\nCheck your",
+      part2: 'setting.',
     },
-    notePathIsIgnored: 'Note path is ignored'
+    notePathIsIgnored: 'Note path is ignored',
   },
   obsidianDevUtils: {
     buttons: {
       cancel: 'Cancel',
-      ok: 'OK'
+      ok: 'OK',
     },
     dataview: {
       itemsPerPage: 'Items per page:',
-      jumpToPage: 'Jump to page:'
+      jumpToPage: 'Jump to page:',
     },
     notices: {
       attachmentIsStillUsed: 'Attachment {{attachmentPath}} is still used by other notes. It will not be deleted.',
-      unhandledError: 'An unhandled error occurred. Please check the console for more information.'
-    }
+      unhandledError: 'An unhandled error occurred. Please check the console for more information.',
+    },
   },
   pluginSettings: {
     attachmentRenameMode: {
       all: {
         description: 'all files are renamed.',
-        displayText: 'All'
+        displayText: 'All',
       },
       none: {
         description: 'their names are preserved.',
-        displayText: 'None'
+        displayText: 'None',
       },
       onlyPastedImages: {
         description:
           'only pasted images are renamed. Applies only when the PNG image content is pasted from the clipboard directly. Typically, for pasting screenshots.',
-        displayText: 'Only pasted images'
-      }
+        displayText: 'Only pasted images',
+      },
     },
     collectAttachmentUsedByMultipleNotesMode: {
       cancel: {
         description: 'cancel the attachment collecting.',
-        displayText: 'Cancel'
+        displayText: 'Cancel',
       },
       copy: {
         description: 'copy the attachment to the new location.',
-        displayText: 'Copy'
+        displayText: 'Copy',
       },
       move: {
         description: 'move the attachment to the new location.',
-        displayText: 'Move'
+        displayText: 'Move',
       },
       prompt: {
         description: 'prompt the user to choose the action.',
-        displayText: 'Prompt'
+        displayText: 'Prompt',
       },
       skip: {
         description: 'skip the attachment and proceed to the next one.',
-        displayText: 'Skip'
-      }
+        displayText: 'Skip',
+      },
     },
     defaultImageSizeDimension: {
       height: 'Height',
-      width: 'Width'
+      width: 'Width',
     },
     emptyAttachmentFolderBehavior: {
       delete: {
         description: 'will delete the empty attachment folder.',
-        displayText: 'Delete'
+        displayText: 'Delete',
       },
       deleteWithEmptyParents: {
         description: 'will delete the empty attachment folder and its empty parent folders.',
-        displayText: 'Delete with empty parents'
+        displayText: 'Delete with empty parents',
       },
       keep: {
         description: 'will keep the empty attachment folder.',
-        displayText: 'Keep'
-      }
-    }
+        displayText: 'Keep',
+      },
+    },
   },
   pluginSettingsManager: {
     customToken: {
       codeComment:
         '// Custom tokens were commented out as they have to be updated to the new format introduced in plugin version 9.0.0.\n// Refer to the documentation (https://github.com/cnzf1/obsidian-paste-image?tab=readme-ov-file#custom-tokens) for more information.',
       deprecated: {
-        part1: 'In plugin version 9.0.0, the format of custom token registration changed. Please update your tokens accordingly. Refer to the',
+        part1:
+          'In plugin version 9.0.0, the format of custom token registration changed. Please update your tokens accordingly. Refer to the',
         part2: 'documentation',
-        part3: 'for more information'
-      }
+        part3: 'for more information',
+      },
     },
     legacyRenameAttachmentsToLowerCase: {
       part1: 'In plugin version 9.0.0, the',
       part2: 'setting is deprecated. Use',
       part3: 'format instead. See',
       part4: 'documentation',
-      part5: 'for more information'
+      part5: 'for more information',
     },
     markdownUrlFormat: {
       deprecated: {
@@ -137,12 +139,12 @@ export const defaultTranslations = {
         part2: 'format. Please refer to the',
         part3: 'documentation',
         part4: 'for more information',
-        part5: 'This message will not be shown again.'
-      }
+        part5: 'This message will not be shown again.',
+      },
     },
     specialCharacters: {
       part1: 'In plugin version 9.16.0, the',
-      part2: 'default setting value was changed. Your setting value was updated to the new default value.'
+      part2: 'default setting value was changed. Your setting value was updated to the new default value.',
     },
     validation: {
       defaultImageSizeMustBePercentageOrPixels: 'Default image size must be in pixels or percentage',
@@ -150,27 +152,28 @@ export const defaultTranslations = {
       invalidRegularExpression: 'Invalid regular expression {{regExp}}',
       specialCharactersMustNotContainSlash: 'Special characters must not contain /',
       specialCharactersReplacementMustNotContainInvalidFileNamePathCharacters:
-        'Special character replacement must not contain invalid file name path characters.'
+        'Special character replacement must not contain invalid file name path characters.',
     },
     version: {
       part1: 'Your settings file ',
       part2: 'has version',
       part3: 'which is newer than the current plugin version',
-      part4: 'The plugin might not work as expected. Please update the plugin to the latest version or ensure that the settings are correct.'
-    }
+      part4:
+        'The plugin might not work as expected. Please update the plugin to the latest version or ensure that the settings are correct.',
+    },
   },
   pluginSettingsTab: {
     attachmentRenameMode: {
       description: {
-        part1: 'When attaching files:'
+        part1: 'When attaching files:',
       },
-      name: 'Attachment rename mode'
+      name: 'Attachment rename mode',
     },
     collectAttachmentUsedByMultipleNotesMode: {
       description: {
-        part1: 'When the collected attachment is used by multiple notes:'
+        part1: 'When the collected attachment is used by multiple notes:',
       },
-      name: 'Collect attachment used by multiple notes mode'
+      name: 'Collect attachment used by multiple notes mode',
     },
     customTokens: {
       description: {
@@ -178,42 +181,44 @@ export const defaultTranslations = {
         part2: 'See',
         part3: 'documentation',
         part4: 'for more information.',
-        part5: '⚠️ Custom tokens can be an arbitrary JavaScript code. If poorly written, it can cause the data loss. Use it at your own risk.'
+        part5:
+          '⚠️ Custom tokens can be an arbitrary JavaScript code. If poorly written, it can cause the data loss. Use it at your own risk.',
       },
-      name: 'Custom tokens'
+      name: 'Custom tokens',
     },
     defaultImageSize: {
       description: {
         part1: 'The default image size.',
         part2: 'Can be specified in pixels',
         part3: 'or percentage of the full image size',
-        part4: 'Leave blank to use the original image size.'
+        part4: 'Leave blank to use the original image size.',
       },
-      name: 'Default image size'
+      name: 'Default image size',
     },
     duplicateNameSeparator: {
       description: {
-        part1: 'When you are pasting/dragging a file with the same name as an existing file, this separator will be added to the file name.',
+        part1:
+          'When you are pasting/dragging a file with the same name as an existing file, this separator will be added to the file name.',
         part2: 'E.g., when you are dragging file',
         part3: ', it will be renamed to ',
-        part4: ', etc, getting the first name available.'
+        part4: ', etc, getting the first name available.',
       },
-      name: 'Duplicate name separator'
+      name: 'Duplicate name separator',
     },
     emptyAttachmentFolderBehavior: {
       description: {
-        part1: 'When the attachment folder becomes empty:'
+        part1: 'When the attachment folder becomes empty:',
       },
-      name: 'Empty attachment folder behavior'
+      name: 'Empty attachment folder behavior',
     },
     excludePaths: {
       description: {
         part1: 'Exclude notes from the following paths.',
         part2: 'Insert each path on a new line.',
         part3: 'You can use path string or',
-        part4: 'If the setting is empty, no notes are excluded.'
+        part4: 'If the setting is empty, no notes are excluded.',
       },
-      name: 'Exclude paths'
+      name: 'Exclude paths',
     },
     excludePathsFromAttachmentCollecting: {
       description: {
@@ -222,33 +227,38 @@ export const defaultTranslations = {
         part3: 'command is executed.',
         part4: 'Insert each path on a new line.',
         part5: 'You can use path string or',
-        part6: 'If the setting is empty, no paths are excluded from attachment collecting.'
+        part6: 'If the setting is empty, no paths are excluded from attachment collecting.',
       },
-      name: 'Exclude paths from attachment collecting'
+      name: 'Exclude paths from attachment collecting',
     },
     generatedAttachmentFileName: {
       description: {
         part1: 'See available',
-        part2: 'tokens'
+        part2: 'tokens',
       },
-      name: 'Generated attachment file name'
+      name: 'Generated attachment file name',
     },
     includePaths: {
       description: {
         part1: 'Include notes from the following paths.',
         part2: 'Insert each path on a new line.',
         part3: 'You can use path string or',
-        part4: 'If the setting is empty, all notes are included.'
+        part4: 'If the setting is empty, all notes are included.',
       },
-      name: 'Include paths'
+      name: 'Include paths',
     },
     jpegQuality: {
       description: 'The smaller the quality, the greater the compression ratio.',
-      name: 'JPEG Quality'
+      name: 'JPEG Quality',
     },
     imageFormat: {
       name: 'Image Format',
       description: 'The format for typing image code.',
+    },
+    htmlImageFormat: {
+      align: 'Align direction',
+      width: 'Width',
+      style: 'Style',
     },
     locationForNewAttachments: {
       description: {
@@ -258,71 +268,72 @@ export const defaultTranslations = {
         part4: 'tokens',
         part5: 'Dot-folders like',
         part6: 'are not recommended, because Obsidian does not track them. You might need to use',
-        part7: 'Plugin to manage them.'
+        part7: 'Plugin to manage them.',
       },
-      name: 'Location for new attachments'
+      name: 'Location for new attachments',
     },
     markdownUrlFormat: {
       description: {
         part1: 'Format for the URL that will be inserted into Markdown.',
         part2: 'See available',
         part3: 'tokens',
-        part4: 'Leave blank to use the default format.'
+        part4: 'Leave blank to use the default format.',
       },
-      name: 'Markdown URL format'
+      name: 'Markdown URL format',
     },
     renameAttachmentsToLowerCase: 'Rename attachments to lower case',
     resetToSampleCustomTokens: {
-      message: 'Are you sure you want to reset the custom tokens to the sample custom tokens? Your changes will be lost.',
-      title: 'Reset to sample custom tokens'
+      message:
+        'Are you sure you want to reset the custom tokens to the sample custom tokens? Your changes will be lost.',
+      title: 'Reset to sample custom tokens',
     },
     shouldConvertPastedImagesToJpeg: {
       description:
         'Whether to convert pasted images to JPEG. Applies only when the PNG image content is pasted from the clipboard directly. Typically, for pasting screenshots.',
-      name: 'Should convert pasted images to JPEG'
+      name: 'Should convert pasted images to JPEG',
     },
     shouldDeleteOrphanAttachments: {
       description: 'If enabled, when the note is deleted, its orphan attachments are deleted as well.',
-      name: 'Should delete orphan attachments'
+      name: 'Should delete orphan attachments',
     },
     shouldRenameAttachmentFiles: {
       description: 'Whether to rename attachment files when a note is renamed or moved.',
-      name: 'Should rename attachment files'
+      name: 'Should rename attachment files',
     },
     shouldRenameAttachmentFolders: {
       description: 'Whether to rename attachment folders when a note is renamed or moved.',
-      name: 'Should rename attachment folders'
+      name: 'Should rename attachment folders',
     },
     shouldRenameCollectedAttachments: {
       description: {
         part1: 'If enabled, attachments processed via',
         part2: 'Collect attachments',
         part3: 'commands will be renamed according to the',
-        part4: 'setting.'
+        part4: 'setting.',
       },
-      name: 'Should rename collected attachments'
+      name: 'Should rename collected attachments',
     },
     specialCharacters: {
       description: {
         part1: 'Special characters in attachment folder and file name to be replaced or removed.',
-        part2: 'Leave blank to preserve special characters.'
+        part2: 'Leave blank to preserve special characters.',
       },
-      name: 'Special characters'
+      name: 'Special characters',
     },
     specialCharactersReplacement: {
       description: {
         part1: 'Replacement string for special characters in attachment folder and file name.',
-        part2: 'Leave blank to remove special characters.'
+        part2: 'Leave blank to remove special characters.',
       },
-      name: 'Special characters replacement'
+      name: 'Special characters replacement',
     },
     timeoutInSeconds: {
       description: {
         part1: 'The timeout in seconds for all operations.',
         part2: 'If',
-        part3: 'is set, the operations execution timeout is disabled.'
+        part3: 'is set, the operations execution timeout is disabled.',
       },
-      name: 'Timeout in seconds'
+      name: 'Timeout in seconds',
     },
     treatAsAttachmentExtensions: {
       description: {
@@ -331,16 +342,16 @@ export const defaultTranslations = {
         part3: 'and',
         part4: 'linked files are not treated as attachments and are not moved with the note.',
         part5: 'You can add custom extensions, e.g.',
-        part6: ', to override this behavior.'
+        part6: ', to override this behavior.',
       },
-      name: 'Treat as attachment extensions'
-    }
+      name: 'Treat as attachment extensions',
+    },
   },
   promptWithPreviewModal: {
     previewModal: {
-      title: 'Preview attachment file \'{{fullFileName}}\''
+      title: "Preview attachment file '{{fullFileName}}'",
     },
-    title: 'Provide a value for the prompt token'
+    title: 'Provide a value for the prompt token',
   },
-  regularExpression: '/regular expression/'
+  regularExpression: '/regular expression/',
 } as const satisfies DefaultTranslationsBase;

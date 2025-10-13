@@ -10,6 +10,13 @@ This is a plugin for [Obsidian](https://obsidian.md/) that allows to customize a
 
 ## Settings
 
+### Image format
+
+Select image format.
+
+- `markdown` like `![](url)`.
+- `html` like `<img src="url">`.
+
 ### Location for new attachments
 
 - Same to "Files & Links -> Default location for new attachments".
@@ -301,7 +308,7 @@ registerCustomToken('bar', async (ctx) => {
 });
 
 registerCustomToken('baz', async (ctx) => {
-  return ctx.noteFileName + await ctx.fillTemplate('corge ${grault} garply ${waldo:fred} plugh');
+  return ctx.noteFileName + (await ctx.fillTemplate('corge ${grault} garply ${waldo:fred} plugh'));
 });
 ```
 
@@ -324,7 +331,6 @@ To install the latest beta release of this plugin (regardless if it is available
 1. Ensure you have the [BRAT plugin](https://obsidian.md/plugins?id=obsidian42-brat) installed and enabled.
 2. Click [Install via BRAT](https://intradeus.github.io/http-protocol-redirector?r=obsidian://brat?plugin=https://github.com/cnzf1/obsidian-paste-image).
 3. An Obsidian pop-up window should appear. In the window, click the `Add plugin` button once and wait a few seconds for the plugin to install.
-
 
 ## Support
 

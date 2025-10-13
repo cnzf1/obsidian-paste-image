@@ -24,7 +24,7 @@ export enum AttachmentRenameMode {
 
   OnlyPastedImages = 'Only pasted images',
   // eslint-disable-next-line perfectionist/sort-enums -- Need to keep enum order.
-  All = 'All'
+  All = 'All',
 }
 
 export enum CollectAttachmentUsedByMultipleNotesMode {
@@ -32,23 +32,25 @@ export enum CollectAttachmentUsedByMultipleNotesMode {
   Copy = 'Copy',
   Move = 'Move',
   Prompt = 'Prompt',
-  Skip = 'Skip'
+  Skip = 'Skip',
 }
 
 export enum DefaultImageSizeDimension {
   Height = 'height',
-  Width = 'width'
+  Width = 'width',
 }
 
 export class PluginSettings {
   // eslint-disable-next-line no-template-curly-in-string -- Valid token.
   public attachmentFolderPath = './assets/${noteFileName}';
   public attachmentRenameMode: AttachmentRenameMode = AttachmentRenameMode.OnlyPastedImages;
-  public collectAttachmentUsedByMultipleNotesMode: CollectAttachmentUsedByMultipleNotesMode = CollectAttachmentUsedByMultipleNotesMode.Skip;
+  public collectAttachmentUsedByMultipleNotesMode: CollectAttachmentUsedByMultipleNotesMode =
+    CollectAttachmentUsedByMultipleNotesMode.Skip;
   public defaultImageSize = '';
   public defaultImageSizeDimension: DefaultImageSizeDimension = DefaultImageSizeDimension.Width;
   public duplicateNameSeparator = ' ';
-  public emptyAttachmentFolderBehavior: EmptyAttachmentFolderBehavior = EmptyAttachmentFolderBehavior.DeleteWithEmptyParents;
+  public emptyAttachmentFolderBehavior: EmptyAttachmentFolderBehavior =
+    EmptyAttachmentFolderBehavior.DeleteWithEmptyParents;
   // eslint-disable-next-line no-template-curly-in-string -- Valid token.
   public generatedAttachmentFileName = 'file-${date:YYYYMMDDHHmmssSSS}';
   // eslint-disable-next-line no-magic-numbers -- Magic numbers are OK in settings.
@@ -65,7 +67,10 @@ export class PluginSettings {
   public timeoutInSeconds = 5;
   public treatAsAttachmentExtensions: readonly string[] = ['.excalidraw.md'];
   public version = '';
-  public imageFormat = "html";
+  public imageFormat = 'html';
+  public htmlImageAlign: string = 'left';
+  public htmlImageWidth: string = 'auto';
+  public htmlImageStyle: string = '';
 
   public get customTokensStr(): string {
     return this._customTokensStr;
@@ -90,7 +95,10 @@ export class PluginSettings {
 
   public set excludePathsFromAttachmentCollecting(value: string[]) {
     this._excludePathsFromAttachmentCollecting = value.filter(Boolean);
-    this._excludePathsFromAttachmentCollectingRegExp = makeRegExp(this._excludePathsFromAttachmentCollecting, NEVER_MATCH_REG_EXP);
+    this._excludePathsFromAttachmentCollectingRegExp = makeRegExp(
+      this._excludePathsFromAttachmentCollecting,
+      NEVER_MATCH_REG_EXP,
+    );
   }
 
   public get includePaths(): string[] {
@@ -139,12 +147,13 @@ function makeRegExp(paths: string[], defaultRegExp: RegExp): RegExp {
     return defaultRegExp;
   }
 
-  const regExpStrCombined = paths.map((path) => {
-    if (path.startsWith('/') && path.endsWith('/')) {
-      return path.slice(1, -1);
-    }
-    return `^${escapeRegExp(path)}`;
-  })
+  const regExpStrCombined = paths
+    .map((path) => {
+      if (path.startsWith('/') && path.endsWith('/')) {
+        return path.slice(1, -1);
+      }
+      return `^${escapeRegExp(path)}`;
+    })
     .map((regExpStr) => `(${regExpStr})`)
     .join('|');
   return new RegExp(regExpStrCombined);

@@ -1,21 +1,13 @@
 import type { FileStats } from 'obsidian';
 
-import {
-  normalizePath,
-  Notice
-} from 'obsidian';
+import { normalizePath, Notice } from 'obsidian';
 import { appendCodeBlock } from 'obsidian-dev-utils/HTMLElement';
 import { t } from 'obsidian-dev-utils/obsidian/i18n/i18n';
 import { join } from 'obsidian-dev-utils/Path';
 
 import type { Plugin } from './Plugin.ts';
 
-import {
-  Substitutions,
-  TokenValidationMode,
-  validateFileName,
-  validatePath
-} from './Substitutions.ts';
+import { Substitutions, TokenValidationMode, validateFileName, validatePath } from './Substitutions.ts';
 import { ActionContext } from './TokenEvaluatorContext.ts';
 
 export async function getAttachmentFolderFullPathForPath(
@@ -25,7 +17,7 @@ export async function getAttachmentFolderFullPathForPath(
   attachmentFileName: string,
   oldNoteFilePath?: string,
   attachmentFileContent?: ArrayBuffer,
-  attachmentFileStat?: FileStats
+  attachmentFileStat?: FileStats,
 ): Promise<string> {
   return await getAttachmentFolderPath(
     plugin,
@@ -36,17 +28,20 @@ export async function getAttachmentFolderFullPathForPath(
       noteFilePath: notePath,
       oldNoteFilePath,
       originalAttachmentFileName: attachmentFileName,
-      plugin
-    })
+      plugin,
+    }),
   );
 }
 
-export async function getGeneratedAttachmentFileBaseName(plugin: Plugin, substitutions: Substitutions): Promise<string> {
+export async function getGeneratedAttachmentFileBaseName(
+  plugin: Plugin,
+  substitutions: Substitutions,
+): Promise<string> {
   const path = await resolvePathTemplate(plugin, plugin.settings.generatedAttachmentFileName, substitutions, true);
   let validationMessage = await validatePath({
     areTokensAllowed: false,
     path,
-    plugin
+    plugin,
   });
   if (!validationMessage) {
     const parts = path.split('/');
@@ -57,17 +52,22 @@ export async function getGeneratedAttachmentFileBaseName(plugin: Plugin, substit
       fileName,
       isEmptyAllowed: false,
       plugin,
-      tokenValidationMode: TokenValidationMode.Error
+      tokenValidationMode: TokenValidationMode.Error,
     });
   }
   if (validationMessage) {
-    new Notice(createFragment((f) => {
-      f.appendText(t(($) => $.notice.generatedAttachmentFileNameIsInvalid.part1, { path, validationMessage }));
-      f.appendText(' ');
-      appendCodeBlock(f, t(($) => $.pluginSettingsTab.generatedAttachmentFileName.name));
-      f.appendText(' ');
-      f.appendText(t(($) => $.notice.generatedAttachmentFileNameIsInvalid.part2));
-    }));
+    new Notice(
+      createFragment((f) => {
+        f.appendText(t(($) => $.notice.generatedAttachmentFileNameIsInvalid.part1, { path, validationMessage }));
+        f.appendText(' ');
+        appendCodeBlock(
+          f,
+          t(($) => $.pluginSettingsTab.generatedAttachmentFileName.name),
+        );
+        f.appendText(' ');
+        f.appendText(t(($) => $.notice.generatedAttachmentFileNameIsInvalid.part2));
+      }),
+    );
     const errorMessage = `Generated attachment file name "${path}" is invalid.\n${validationMessage}\nCheck your 'Generated attachment file name' setting.`;
     console.error(errorMessage, substitutions);
     throw new Error(errorMessage);
@@ -90,8 +90,12 @@ async function getAttachmentFolderPath(plugin: Plugin, substitutions: Substituti
   return await resolvePathTemplate(plugin, plugin.settings.attachmentFolderPath, substitutions, false);
 }
 
-async function resolvePathTemplate(plugin: Plugin, template: string, substitutions: Substitutions, isFileNamePart: boolean): Promise<string> {
-
+async function resolvePathTemplate(
+  plugin: Plugin,
+  template: string,
+  substitutions: Substitutions,
+  isFileNamePart: boolean,
+): Promise<string> {
   let resolvedPath = await substitutions.fillTemplate(template);
   const resolvedPathParts = resolvedPath.split('/').map((part) => cleanFilePathPart(plugin, part));
   resolvedPath = resolvedPathParts.join('/');
@@ -99,7 +103,7 @@ async function resolvePathTemplate(plugin: Plugin, template: string, substitutio
   const validationError = await validatePath({
     areTokensAllowed: false,
     path: resolvedPath,
-    plugin
+    plugin,
   });
   if (validationError) {
     throw new Error(`Resolved path ${resolvedPath} is invalid: ${validationError}`);

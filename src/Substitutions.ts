@@ -391,7 +391,6 @@ export class Substitutions {
   }
 
   public async fillTemplate(template: string): Promise<string> {
-
     return await replaceAllAsync(template, SUBSTITUTION_TOKEN_REG_EXP, async (abortSignal, args, token, format) => {
       abortSignal.throwIfAborted();
 
