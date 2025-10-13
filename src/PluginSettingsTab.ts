@@ -116,7 +116,15 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
     new SettingEx(this.containerEl)
       .setName(t(($) => $.pluginSettingsTab.imageFormat.name))
       .setDesc(
-        t(($) => $.pluginSettingsTab.imageFormat.description) + '\n html: <img src="...">' + '\n markdown: ![](...)',
+        createFragment((f) => {
+          f.appendText(t(($) => $.pluginSettingsTab.imageFormat.description));
+          f.createEl('br');
+          f.appendText('html: ');
+          appendCodeBlock(f, '<img src="...">');
+          f.createEl('br');
+          f.appendText('markdown: ');
+          appendCodeBlock(f, '![...](...)');
+        }),
       )
       .addDropdown((dropDown) => {
         dropDown
