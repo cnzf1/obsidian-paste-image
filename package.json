@@ -21,7 +21,7 @@
   },
   "keywords": [],
   "author": "cnzf1",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@commitlint/cli": "^20.0.0",
     "@commitlint/config-conventional": "^20.0.0",
