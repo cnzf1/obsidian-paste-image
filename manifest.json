@@ -3,9 +3,9 @@
   "name": "Paste Image",
   "version": "0.0.1",
   "minAppVersion": "1.9.14",
-  "description": "Customize attachment location with variables(${noteFileName}, ${date:format}, etc) like typora.",
+  "description": "Specify the image code format by `html` or `markdown`, then we can use HTML <img> or Markdown ![](). \n Customize attachment location with variables(${noteFileName}, ${date:format}, etc) like typora.",
   "author": "cnzf1",
   "authorUrl": "https://github.com/cnzf1/",
   "isDesktopOnly": false,
-  "fundingUrl": "https://www.buymeacoffee.com/cnzf1"
+  "fundingUrl": "https://github.com/cnzf1/obsidian-paste-image?tab=readme-ov-file#sponsor"
 }
