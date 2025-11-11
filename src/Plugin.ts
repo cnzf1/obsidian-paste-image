@@ -257,7 +257,11 @@ export class Plugin extends PluginBase<PluginTypes> {
   private generateHtmlImageLink(file: TFile): string {
     const src = encodeUrl(file.path);
     if (src !== '') {
-      var link = "<img src='" + src + "' align='" + this.settings.htmlImageAlign + "'";
+      var link = "<img src='" + src + "'";
+
+      if (this.settings.htmlImageAlign !== '') {
+        link += ' align="' + this.settings.htmlImageAlign + '"';
+      }
 
       if (this.settings.htmlImageWidth !== '') {
         link += ' width="' + this.settings.htmlImageWidth + '"';

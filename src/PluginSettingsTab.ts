@@ -143,10 +143,11 @@ export class PluginSettingsTab extends PluginSettingsTabBase<PluginTypes> {
       .setName(t(($) => $.pluginSettingsTab.htmlImageFormat.align))
       .addDropdown((dropDown) => {
         dropDown
+          .addOption('none', '')
           .addOption('left', 'left')
           .addOption('center', 'center')
           .addOption('right', 'right')
-          .setValue('left')
+          .setValue('')
           .onChange((value) => {
             this.plugin.settingsManager.setProperty('htmlImageAlign', value);
           });

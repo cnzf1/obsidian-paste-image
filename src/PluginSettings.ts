@@ -68,7 +68,7 @@ export class PluginSettings {
   public treatAsAttachmentExtensions: readonly string[] = ['.excalidraw.md'];
   public version = '';
   public imageFormat = 'html';
-  public htmlImageAlign: string = 'left';
+  public htmlImageAlign: string = '';
   public htmlImageWidth: string = 'auto';
   public htmlImageStyle: string = '';
 

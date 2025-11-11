@@ -1,9 +1,9 @@
 .PHONY: all install build
 
 build:
-  @npm run build
+	@npm run build
 
 install:
-  @npm install --verbose
+	@npm install --verbose
 
 all: install build
